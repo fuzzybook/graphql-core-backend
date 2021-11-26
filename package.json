@@ -1,0 +1,65 @@
+{
+  "name": "learn-typegraphql",
+  "version": "1.0.0",
+  "description": "",
+  "main": "build/index.js",
+  "bin": "bin.js",
+  "pkg": {
+    "scripts": "build/**/*.js",
+    "targets": [
+      "node14-linux"
+    ],
+    "outputPath": "dist"
+  },
+  "scripts": {
+    "dev": "nodemon src/index.ts",
+    "start": "nodemon -w src --ext ts --exec 'ts-node src/index.ts'",
+    "kill process": "(! lsof -t -i:4000) || kill -9 $(lsof -t -i:4000)",
+    "deploy-docker": "docker save backend | ssh -C fabio@XXX.XXX.XXX.XXX docker load"
+  },
+  "author": "Fabio Prada <prada.fabio@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "apollo-server": "^3.5.0",
+    "apollo-server-core": "^3.3.0",
+    "apollo-server-express": "^3.3.0",
+    "bcrypt": "^5.0.1",
+    "class-validator": "^0.13.1",
+    "directory-tree": "^2.2.7",
+    "ejs": "^3.1.6",
+    "express": "^4.17.1",
+    "faker": "^5.4.0",
+    "fs-extra": "^9.1.0",
+    "graphql": "^15.7.2",
+    "jsonwebtoken": "^8.5.1",
+    "mjml": "^4.10.3",
+    "nanoid": "^3.1.25",
+    "node-exceptions": "^4.0.1",
+    "nodejs-traceroute": "^1.2.0",
+    "nodemailer": "^6.6.3",
+    "pg": "^8.5.1",
+    "reflect-metadata": "^0.1.13",
+    "subscriptions-transport-ws": "^0.11.0",
+    "type-graphql": "^1.1.1",
+    "typeorm": "^0.2.22",
+    "ua-parser-js": "^0.7.28",
+    "uuid-validate": "0.0.3",
+    "validator": "^13.5.2",
+    "ws": "^8.2.3"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^3.0.0",
+    "@types/ejs": "^3.1.0",
+    "@types/fs-extra": "^9.0.10",
+    "@types/ioredis": "^4.28.1",
+    "@types/jsonwebtoken": "^8.5.0",
+    "@types/mjml": "^4.7.0",
+    "@types/nodemailer": "^6.4.4",
+    "@types/ua-parser-js": "^0.7.36",
+    "@types/uuid-validate": "0.0.1",
+    "node-fetch": "^3.1.0",
+    "nodemon": "^2.0.15",
+    "ts-node": "^8.6.0",
+    "typescript": "^3.7.4"
+  }
+}

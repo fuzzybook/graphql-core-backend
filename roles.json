@@ -1,0 +1,33 @@
+{
+    "role": "superadmin",
+    "roles": [
+      {
+        "role": "orionadmin",
+        "roles": [
+          {
+            "role": "appadmin",
+            "roles": [
+              {
+                "role": "user",
+                "roles": []
+              },
+              {
+                "role": "gestoreCosto",
+                "roles": []
+              },
+              {
+                "role": "gestoreAltri",
+                "roles": [
+                  {
+                    "role": "visualizzaAltri",
+                    "roles": []
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+  
