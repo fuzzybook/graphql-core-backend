@@ -1,0 +1,12 @@
+node_modules
+.env
+*.d.ts
+*.map
+build
+package-lock.json
+DOCKER
+docker-data
+yarn-error.log
+yarn.lock
+.DS_Store
+package-lock.json
