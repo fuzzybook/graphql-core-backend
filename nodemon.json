@@ -1,5 +1,6 @@
 {
     "events": {
     },
-    "delay": "200"
+    "delay": "2000",
+    "ignore": ["node_modules/"]
 }

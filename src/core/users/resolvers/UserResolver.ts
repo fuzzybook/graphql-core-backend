@@ -1,16 +1,14 @@
 import { Resolver, Query, Mutation, Arg, Authorized, Ctx } from 'type-graphql';
 
 import uuidValidate from 'uuid-validate';
-import { LoginResponse, UserResponse, UserStatus } from '../Responses';
+import { LoginResponse, UserResponse } from '../Responses';
 import { UserProfileInput, SetRolesInput, UpdateUserInput, UpdateUserStatusInput, UserInput, UserPreferencesInput } from '../Inputs';
 import dotenv from 'dotenv';
 import { LocalFileSystemStorage, LocalFileSystemStorageConfig } from '../../abstractFS/LocalFileSystemStorage';
 import { GraphqlContext } from '../../../sever/auth';
-import { User } from '../models/User';
-import { DEFAULT_ROLE, ROLESADMIN, RoleType, SUPERADMIN } from '../../../config/roles';
-import Roles from '../../roles/controllers/RolesClass';
-import { IRolesResponse } from '../../roles/Responses';
 import { UserController } from '../controllers/User';
+import { roles } from '../../roles/generated';
+
 dotenv.config({
   path: '.env',
 });
@@ -156,19 +154,19 @@ export class UserResolver {
 
   // ADMIN ONLY
 
-  @Authorized([SUPERADMIN, 'SUPERVISOR'])
+  @Authorized([roles.superadmin, roles.supervisor])
   @Query(() => [UserResponse])
   async users() {
     return this.userController.getAll();
   }
 
-  @Authorized([SUPERADMIN, ROLESADMIN, 'SUPERVISOR'])
+  @Authorized([roles.superadmin, roles.rolesadmin, roles.supervisor])
   @Mutation(() => Boolean)
   async delete(@Arg('uuid') id: string) {
     return this.userController.delete(id);
   }
 
-  @Authorized([SUPERADMIN, ROLESADMIN, 'SUPERVISOR'])
+  @Authorized([roles.superadmin, roles.rolesadmin, roles.supervisor])
   @Mutation(() => UserResponse)
   async setRoles(@Arg('data') data: SetRolesInput) {
     return this.userController.updateRoles(data);

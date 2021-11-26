@@ -1,8 +1,7 @@
 import { Profile } from '../core/users/models/Profile';
 import { UserStatus } from '../core/users/Responses';
 import { User } from '../core/users/models/User';
-import { DEFAULT_ROLE, SUPERADMIN } from '../config/roles';
-import { defaultRole, roles } from '../../Scripts/roles';
+import { roles } from '../core/roles/generated';
 
 var faker = require('faker');
 
@@ -50,7 +49,7 @@ export const generateUsers = async () => {
       var user = new User();
       user.email = email;
       user.password = 'Password';
-      user.roles = [defaultRole];
+      user.roles = [roles.default];
       user.status = UserStatus.waiting;
       console.log(Object.values(user));
 

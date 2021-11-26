@@ -1,5 +1,4 @@
-import { AuthRoles, authRoles, SUPERADMIN, DEFAULT_ROLE, RoleType } from '../../../config/roles';
-
+import { AuthRoles, authRoles, DEFAULT_ROLE, RoleType } from '../../../config/roles';
 import { getMetadataStorage } from 'type-graphql';
 import { AuthorizedMetadata } from 'type-graphql/dist/metadata/definitions';
 
@@ -23,7 +22,6 @@ export class Role {
 export class RolesResult {
   roles: { [key: string]: Role };
   tree: AuthRoles;
-  superadmin: string;
   defaultRole: string;
 }
 
@@ -38,7 +36,7 @@ export default class Roles {
   constructor(print: boolean = false) {
     try {
       this.parseRoles(authRoles, '');
-      this.result = { roles: this.r, tree: authRoles, superadmin: SUPERADMIN, defaultRole: DEFAULT_ROLE };
+      this.result = { roles: this.r, tree: authRoles, defaultRole: DEFAULT_ROLE };
       this.build(print);
     } catch (err) {
       console.error(err);
@@ -64,8 +62,7 @@ export default class Roles {
   getAuth(roles: string[] = []): number {
     let auth = 0;
     roles.map((r) => {
-      console.log(r, this.r[r].user);
-      auth |= this.r[r].user;
+      if (this.r[r]) auth |= this.r[r].user;
     });
     return auth;
   }
@@ -73,11 +70,11 @@ export default class Roles {
   parseRoles(o: AuthRoles, pre: string) {
     this.level++;
     this.id++;
-    let k = `${pre}.${o.role}`.toUpperCase();
+    let k = `${pre}.${o.role}`.toLowerCase();
 
-    const path = `${pre}.${o.role}.`.toUpperCase();
+    const path = `${pre}.${o.role}.`.toLowerCase();
 
-    this.r[o.label.toUpperCase()] = {
+    this.r[o.label.toLowerCase()] = {
       path: path,
       label: o.label,
       user: 0,
@@ -112,13 +109,13 @@ export default class Roles {
 
   setRoute(o: AuthRoles, key: string, route: number) {
     const find = (o: AuthRoles, key: string, route: number) => {
-      if (o.role.toUpperCase() === key) {
+      if (o.role.toLowerCase() === key) {
         o.route = route;
         return;
       }
       for (let i = 0; i != o.roles.length; i++) find(o.roles[i], key, route);
     };
-    if (o.role.toUpperCase() === key) {
+    if (o.role.toLowerCase() === key) {
       o.route = route;
       return;
     }
@@ -145,7 +142,7 @@ export default class Roles {
     }
     for (let i in this.r) {
       this.r[i].level = this.maxLevel - this.r[i].level;
-      this.r[i].label = (this.r[i].path.slice(1, -1).split('.')[this.r[i].path.slice(1, -1).split('.').length - 1] || 'unknown').toUpperCase();
+      this.r[i].label = (this.r[i].path.slice(1, -1).split('.')[this.r[i].path.slice(1, -1).split('.').length - 1] || 'unknown').toLowerCase();
       this.r[i].user = this.getItem(this.r[i].path);
       let v = this.r[i];
 
@@ -219,24 +216,21 @@ export default class Roles {
   getTS(): string {
     let ts: string;
 
-    ts = `export enum roles {
+    ts = `
+    export enum roles {
       `;
     for (let i in this.r) {
       ts += `${i.toLowerCase()} = '${i}', // ${this.r[i].description || ''}
       `;
     }
+
+    ts += `default = '${DEFAULT_ROLE}', // default role
+    `;
+
     ts += `}
     `;
 
-    ts += `export const superadmin = roles.superadmin
-    `;
-    ts += `export const defaultRole = roles.user
-    `;
-    ts += `export const rolesAdmin = roles.rolesadmin
-
-    `;
-
-    ts += `
+    /* ts += `
     const enums = {
       roleType: ${this.enumToString(RoleType)},
     }
@@ -276,9 +270,11 @@ export default class Roles {
         description: '${this.r[i].description}'
       },`;
     }
-    ts += `
+    ts += ` 
   }
    `;
+   */
     return Buffer.from(ts).toString('utf8');
   }
 }
+// auto generated

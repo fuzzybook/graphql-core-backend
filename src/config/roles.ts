@@ -89,6 +89,4 @@ export const authRoles: AuthRoles = {
   ],
 };
 
-export const SUPERADMIN = 'SUPERADMIN';
-export const DEFAULT_ROLE = 'VISITOR';
-export const ROLESADMIN = 'ROLESADMIN';
+export const DEFAULT_ROLE = 'visitor';

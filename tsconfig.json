@@ -8,5 +8,6 @@
     "emitDecoratorMetadata": true,
     "strictPropertyInitialization": false,
     "outDir": "build/",
+    "incremental": true,
   }
 }

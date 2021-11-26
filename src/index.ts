@@ -16,14 +16,16 @@ import { registerGraphQL } from './sever/register';
 import { initDB } from './sever/db';
 import { Session } from './core/users/models/Session';
 import Roles from './core/roles/controllers/RolesClass';
+import { getRoles } from './Scripts/getRoles';
 
 // carica le variabili d'ambiente dal file .env ddd
 dotenv.config({
   path: '.env',
 });
 
-process.on('SIGUSR2', () => {
-  process.exit(0);
+process.once('SIGUSR2', function () {
+  console.log(`\nBye fom process ${process.pid}\n`);
+  process.kill(process.pid, 'SIGUSR2');
 });
 
 class ConsoleSpiner {
@@ -143,5 +145,7 @@ if (notFounded) {
   process.exit();
 }
 
-consoleSpinner.Run();
-main();
+getRoles().then(() => {
+  consoleSpinner.Run();
+  main();
+});

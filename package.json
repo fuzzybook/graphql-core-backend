@@ -13,13 +13,12 @@
   },
   "scripts": {
     "dev": "nodemon src/index.ts",
-    "start": "nodemon -w src --ext ts --exec 'ts-node src/index.ts'",
-    "kill process": "(! lsof -t -i:4000) || kill -9 $(lsof -t -i:4000)",
-    "deploy-docker": "docker save backend | ssh -C fabio@XXX.XXX.XXX.XXX docker load"
+    "kill process": "(! lsof -t -i:4000) || kill -9 $(lsof -t -i:4000)"
   },
   "author": "Fabio Prada <prada.fabio@gmail.com>",
   "license": "MIT",
   "dependencies": {
+    
     "apollo-server": "^3.5.0",
     "apollo-server-core": "^3.3.0",
     "apollo-server-express": "^3.3.0",
@@ -35,6 +34,7 @@
     "mjml": "^4.10.3",
     "nanoid": "^3.1.25",
     "node-exceptions": "^4.0.1",
+    "node-fetch": "^3.1.0",
     "nodejs-traceroute": "^1.2.0",
     "nodemailer": "^6.6.3",
     "pg": "^8.5.1",
@@ -57,7 +57,7 @@
     "@types/nodemailer": "^6.4.4",
     "@types/ua-parser-js": "^0.7.36",
     "@types/uuid-validate": "0.0.1",
-    "node-fetch": "^3.1.0",
+    "@types/node-fetch": "^3.0.3",
     "nodemon": "^2.0.15",
     "ts-node": "^8.6.0",
     "typescript": "^3.7.4"

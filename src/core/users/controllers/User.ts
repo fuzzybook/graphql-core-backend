@@ -9,12 +9,12 @@ import { ApolloError } from 'apollo-server-errors';
 import { AccessTokenData, generateAccessToken } from '../../auth/jwToken';
 import { GraphqlContext } from '../../../sever/auth';
 import Roles from '../../roles/controllers/RolesClass';
-import { DEFAULT_ROLE } from '../../../config/roles';
 import { sendActivation, sendRecoverPassword } from './Mailer';
 import { User } from '../models/User';
 import { Profile } from '../models/Profile';
 import { ValidationToken, ValidationTokenType } from '../models/ValidationToken';
 import { Session } from '../models/Session';
+import { roles } from '../../roles/generated';
 
 export class UserController {
   private EmailValidation(email: string): Promise<void> {
@@ -87,7 +87,7 @@ export class UserController {
       }
       const profile = Profile.create(data.profile);
       const user = User.create(data);
-      user.roles = [DEFAULT_ROLE];
+      user.roles = [roles.default];
       user.profile = profile;
       await user.save();
 
