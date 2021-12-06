@@ -1,7 +1,8 @@
 import { Field, ObjectType } from 'type-graphql';
-import { EnumRoles } from '../../sever/register';
 import { AuthRolesResponse, IRolesResponse } from '../roles/Responses';
 import { RolesScalar } from '../roles/Scalars';
+import { ISocialsResponse } from '../users/Responses';
+import { SocialsScalar } from '../users/Scalars';
 
 @ObjectType()
 export class Enums {
@@ -9,8 +10,6 @@ export class Enums {
   roleType: string[];
   @Field(() => [String])
   userStatus: string[];
-  @Field(() => [EnumRoles])
-  test: typeof EnumRoles;
 }
 
 @ObjectType()
@@ -27,4 +26,6 @@ export class System {
   roleRolesAdmin: string;
   @Field(() => AuthRolesResponse, { nullable: true })
   rolesTree?: AuthRolesResponse;
+  @Field(() => SocialsScalar, { description: 'type SocialsResponse = { [key: string]: SocialResponse }; defined in client' })
+  socials: ISocialsResponse;
 }

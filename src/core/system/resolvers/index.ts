@@ -5,6 +5,7 @@ import { roles } from '../../roles/generated';
 import { IRolesResponse } from '../../roles/Responses';
 import { UserStatus } from '../../users/Responses';
 import { Enums, System } from '../Responses';
+import { socialsDefinitions } from '../socials';
 
 @Resolver()
 export class SystemResolver {
@@ -27,6 +28,7 @@ export class SystemResolver {
       userStatus: Object.values(UserStatus),
       roleType: Object.values(RoleType),
     };
+
     const result = <System>{
       enums: enums,
       roles: _roles,
@@ -34,7 +36,9 @@ export class SystemResolver {
       roleDefault: roles.visitor,
       roleRolesAdmin: roles.rolesadmin,
       rolesTree: rolesDefinition.result.tree,
+      socials: socialsDefinitions,
     };
+
     return result;
   }
 }

@@ -1,5 +1,5 @@
-import { UserProfileInput, SetRolesInput, UpdateUserInput, UpdateUserStatusInput, UserInput, UserPreferencesInput } from '../Inputs';
-import { LoginResponse, UserResponse, UserStatus } from '../Responses';
+import { UserProfileInput, SetRolesInput, UpdateUserInput, UpdateUserStatusInput, UserInput, UserPreferencesInput, UpdateUserPasswordInput } from '../Inputs';
+import { ISocialsDataResponse, LoginResponse, UserResponse, UserStatus } from '../Responses';
 
 import * as bcrypt from 'bcrypt';
 import * as dns from 'dns';
@@ -15,6 +15,8 @@ import { Profile } from '../models/Profile';
 import { ValidationToken, ValidationTokenType } from '../models/ValidationToken';
 import { Session } from '../models/Session';
 import { roles } from '../../roles/generated';
+import { socialsDefinitions } from '../../system/socials';
+import { normalizeSocials } from '../Scalars';
 
 export class UserController {
   private EmailValidation(email: string): Promise<void> {
@@ -226,6 +228,8 @@ export class UserController {
       throw new ApolloError('validate.tokenfired');
     }
     let user = await User.findOne({ where: { email: vt.email } });
+    const result = <ISocialsDataResponse>{};
+    // normalize data
     if (!user) {
       throw new ApolloError('validate.usernotexist');
     }
@@ -296,6 +300,32 @@ export class UserController {
     const id = user.profile.id;
     user.profile = profile as Profile;
     user.profile.id = id;
+    user.save();
+    return true;
+  }
+
+  async saveSocials(socials: string, ctx: GraphqlContext): Promise<boolean> {
+    if (!ctx.user?.email) {
+      return false;
+    }
+    const user = await User.findOne({ where: { email: ctx.user?.email } });
+    if (!user) {
+      //TODO internal error user not found
+      return false;
+    }
+    user.socials = normalizeSocials(socials);
+    user.save();
+    return true;
+  }
+
+  async setUserPassword(data: UpdateUserPasswordInput): Promise<boolean> {
+    const user = await User.findOne({ where: { id: data.userId } });
+    if (!user) {
+      //TODO internal error user not found
+      return false;
+    }
+    const password = await bcrypt.hash(data.password, 10);
+    user.password = password;
     user.save();
     return true;
   }

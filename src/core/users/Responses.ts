@@ -35,11 +35,11 @@ export class ProfileResponse {
 
 @ObjectType()
 export class UserPreferences {
-  @Field(() => Boolean)
+  @Field(() => Boolean, { nullable: true, description: 'lock screen on idle' })
   useIdle: boolean;
-  @Field(() => Number)
+  @Field(() => Number, { nullable: true, description: 'time to wait idle state' })
   idleTimeout: number;
-  @Field(() => Boolean)
+  @Field(() => Boolean, { nullable: true, description: 'use pasword to recover state' })
   useIdlePassword: boolean;
 }
 
@@ -69,6 +69,8 @@ export class UserResponse {
   extraSchema: string;
   @Field((type) => UserPreferences, { nullable: true, description: 'user preferences' })
   preferences: string;
+  @Field((type) => SocialDataResponse, { nullable: true, description: 'user preferences' })
+  socials: string;
 }
 
 @ObjectType()
@@ -77,4 +79,24 @@ export class LoginResponse {
   token: string;
   @Field(() => UserResponse, { description: 'user data' })
   user: UserStatus;
+}
+
+export type ISocialsResponse = { [key: string]: SocialResponse };
+
+@ObjectType()
+export class SocialResponse {
+  @Field(() => String, { description: 'social icon' })
+  icon: string;
+  @Field(() => String, { description: 'social label' })
+  label: string;
+  @Field(() => String, { description: 'social mask for address input' })
+  addressMask: string;
+}
+
+export type ISocialsDataResponse = { [key: string]: SocialDataResponse };
+
+@ObjectType()
+export class SocialDataResponse {
+  @Field(() => String, { description: 'social address' })
+  address: string;
 }

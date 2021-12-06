@@ -20,5 +20,5 @@ services:
     ports:
       - 8888:80
     environment:
-      - PGADMIN_DEFAULT_EMAIL=admin@orionedp.ch
-      - PGADMIN_DEFAULT_PASSWORD=Passw0rd
+      - PGADMIN_DEFAULT_EMAIL=email@email.com
+      - PGADMIN_DEFAULT_PASSWORD=Password

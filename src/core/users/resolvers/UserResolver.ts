@@ -2,19 +2,21 @@ import { Resolver, Query, Mutation, Arg, Authorized, Ctx } from 'type-graphql';
 
 import uuidValidate from 'uuid-validate';
 import { LoginResponse, UserResponse } from '../Responses';
-import { UserProfileInput, SetRolesInput, UpdateUserInput, UpdateUserStatusInput, UserInput, UserPreferencesInput } from '../Inputs';
+import { UserProfileInput, SetRolesInput, UpdateUserInput, UpdateUserStatusInput, UserInput, UserPreferencesInput, UpdateUserPasswordInput } from '../Inputs';
 import dotenv from 'dotenv';
 import { LocalFileSystemStorage, LocalFileSystemStorageConfig } from '../../abstractFS/LocalFileSystemStorage';
 import { GraphqlContext } from '../../../sever/auth';
 import { UserController } from '../controllers/User';
 import { roles } from '../../roles/generated';
 
+import { SocialData } from '../Scalars';
+
 dotenv.config({
   path: '.env',
 });
 
 const fsConfig = <LocalFileSystemStorageConfig>{
-  root: process.env.DATAROOT,
+  root: process.env.FSUSERDATA,
 };
 
 @Resolver()
@@ -130,6 +132,11 @@ export class UserResolver {
     return this.userController.saveProfile(profile, ctx);
   }
 
+  @Mutation(() => Boolean)
+  async saveSocials(@Arg('socials') socials: string, @Ctx() ctx: GraphqlContext): Promise<Boolean> {
+    return this.userController.saveSocials(socials, ctx);
+  }
+
   // Recover password
 
   @Mutation(() => String)
@@ -170,5 +177,11 @@ export class UserResolver {
   @Mutation(() => UserResponse)
   async setRoles(@Arg('data') data: SetRolesInput) {
     return this.userController.updateRoles(data);
+  }
+
+  @Authorized([roles.superadmin, roles.usersadmin, roles.supervisor])
+  @Mutation(() => Boolean)
+  async setUserPassword(@Arg('data') data: UpdateUserPasswordInput) {
+    return this.userController.setUserPassword(data);
   }
 }

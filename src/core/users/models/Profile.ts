@@ -26,4 +26,11 @@ export class Profile extends BaseEntity {
   city?: string;
   @Column({ nullable: true })
   country?: string;
+  @Column({
+    type: 'jsonb',
+    array: false,
+    default: () => "'[]'",
+    nullable: false,
+  })
+  socials!: Array<{ icon: string; label: string; address: string; addressMask: string }>;
 }

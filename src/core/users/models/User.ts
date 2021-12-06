@@ -1,6 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn, BaseEntity, CreateDateColumn, UpdateDateColumn, BeforeInsert } from 'typeorm';
 import { Profile } from './Profile';
-import { UserPreferences, UserStatus } from '../Responses';
+import { ISocialsDataResponse, UserPreferences, UserStatus } from '../Responses';
 import * as bcrypt from 'bcrypt';
 
 @Entity()
@@ -24,6 +24,15 @@ export class User extends BaseEntity {
     nullable: false,
   })
   public preferences!: UserPreferences;
+
+  @Column({
+    type: 'jsonb',
+    array: false,
+    default: '{}',
+    nullable: false,
+  })
+  socials!: ISocialsDataResponse;
+
   @Column('text', { default: '' })
   extra: string;
   //TODO schema is unique or indexed

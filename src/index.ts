@@ -85,6 +85,7 @@ async function main() {
 
   async function startApolloServer() {
     const app = express();
+    app.use('/icons', express.static(process.env.ICONS_PATH || ''));
     const httpServer = http.createServer(app);
     server = new ApolloServer({
       schema,

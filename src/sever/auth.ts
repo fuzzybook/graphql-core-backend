@@ -11,6 +11,8 @@ export interface GraphqlContext {
 }
 
 export const siteAuthChecker: AuthChecker<GraphqlContext> = ({ context: { user } }, roles) => {
+  console.log(user?.roles);
+  console.log(roles);
   if (roles.length === 0) {
     if (user !== undefined) return true;
     throw new Error('notaurhorized');

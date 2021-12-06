@@ -1,5 +1,5 @@
 import { IsUUID } from 'class-validator';
-import { Field, InputType } from 'type-graphql';
+import { Field, InputType, ObjectType } from 'type-graphql';
 import { UserStatus } from './Responses';
 
 @InputType()
@@ -69,8 +69,16 @@ export class UpdateUserStatusInput {
 }
 
 @InputType()
-export class UpdateUserPasswordInput {
+export class UpdatePasswordInput {
   @Field()
+  password: string;
+}
+
+@InputType()
+export class UpdateUserPasswordInput {
+  @Field(() => String)
+  userId: string;
+  @Field(() => String)
   password: string;
 }
 
@@ -84,10 +92,10 @@ export class RecoverPasswordInput {
 
 @InputType()
 export class UserPreferencesInput {
-  @Field(() => Boolean)
+  @Field(() => Boolean, { defaultValue: false })
   useIdle: boolean;
-  @Field(() => Number)
+  @Field(() => Number, { defaultValue: 3000 })
   idleTimeout: number;
-  @Field(() => Boolean)
+  @Field(() => Boolean, { defaultValue: false })
   useIdlePassword: boolean;
 }
