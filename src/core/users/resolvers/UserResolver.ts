@@ -71,6 +71,10 @@ export class UserResolver {
         return `data:image/png;base64,${img.raw}`;
       }
       const result = await fs.get(`/users/${id}/avatar.b64image`);
+      if (result.content == '') {
+        const img = await fs.get('/users/defaultAvatar.png', 'base64');
+        return `data:image/png;base64,${img.raw}`;
+      }
       return result.content;
     } catch (e) {
       console.log((e as Error).message);
@@ -79,8 +83,8 @@ export class UserResolver {
   }
 
   @Query(() => Boolean, { nullable: true })
-  async nicknameExist(@Arg('nickname') nickname: string, @Ctx() ctx: GraphqlContext) {
-    return this.userController.nicknameExist(nickname, ctx);
+  async nicknameExist(@Arg('nickname') nickname: string, @Arg('userId') userId: string) {
+    return this.userController.nicknameExist(nickname, userId);
   }
 
   @Mutation(() => Boolean)
@@ -160,6 +164,12 @@ export class UserResolver {
   }
 
   // ADMIN ONLY
+
+  @Authorized([roles.superadmin, roles.usersadmin, roles.supervisor])
+  @Mutation(() => Boolean)
+  async saveUserProfile(@Arg('userId') userId: string, @Arg('profile') profile: UserProfileInput): Promise<Boolean> {
+    return this.userController.saveUserProfile(profile, userId);
+  }
 
   @Authorized([roles.superadmin, roles.supervisor])
   @Query(() => [UserResponse])

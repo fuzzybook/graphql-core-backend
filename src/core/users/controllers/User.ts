@@ -272,8 +272,8 @@ export class UserController {
     return true;
   }
 
-  public async nicknameExist(nickname: String, ctx: GraphqlContext): Promise<boolean> {
-    const user = await User.findOne({ where: { email: ctx.user?.email }, relations: ['profile'] });
+  public async nicknameExist(nickname: String, userId: string): Promise<boolean> {
+    const user = await User.findOne({ where: { id: userId }, relations: ['profile'] });
     if (!user) {
       //TODO internal error user not found
       return true;
@@ -293,6 +293,20 @@ export class UserController {
       return false;
     }
     const user = await User.findOne({ where: { email: ctx.user?.email }, relations: ['profile'] });
+    if (!user) {
+      //TODO internal error user not found
+      return false;
+    }
+    const id = user.profile.id;
+    user.profile = profile as Profile;
+    user.profile.id = id;
+    user.save();
+    return true;
+  }
+
+  async saveUserProfile(profile: UserProfileInput, userId: string): Promise<boolean> {
+    const user = await User.findOne({ where: { id: userId }, relations: ['profile'] });
+    console.log(user, profile, userId);
     if (!user) {
       //TODO internal error user not found
       return false;
