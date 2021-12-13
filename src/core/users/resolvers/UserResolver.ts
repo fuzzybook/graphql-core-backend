@@ -5,7 +5,7 @@ import { LoginResponse, UserResponse } from '../Responses';
 import { UserProfileInput, SetRolesInput, UpdateUserInput, UpdateUserStatusInput, UserInput, UserPreferencesInput, UpdateUserPasswordInput } from '../Inputs';
 import dotenv from 'dotenv';
 import { LocalFileSystemStorage, LocalFileSystemStorageConfig } from '../../abstractFS/LocalFileSystemStorage';
-import { GraphqlContext } from '../../../sever/auth';
+import { GraphqlContext } from '../../../server/auth';
 import { UserController } from '../controllers/User';
 import { roles } from '../../roles/generated';
 
@@ -157,13 +157,25 @@ export class UserResolver {
   async validateRecover(@Arg('token') token: string): Promise<Boolean> {
     return this.userController.validateRecover(token);
   }
-  @Authorized()
+
   @Mutation(() => Boolean)
   async savePreferences(@Arg('preferences') preferences: UserPreferencesInput, @Ctx() ctx: GraphqlContext): Promise<Boolean> {
     return this.userController.savePreferences(preferences, ctx);
   }
 
   // ADMIN ONLY
+
+  @Authorized([roles.superadmin, roles.usersadmin, roles.supervisor])
+  @Mutation(() => Boolean)
+  async saveUserPreferences(@Arg('userId') userId: string, @Arg('preferences') preferences: UserPreferencesInput): Promise<Boolean> {
+    return this.userController.saveUserPreferences(preferences, userId);
+  }
+
+  @Authorized([roles.superadmin, roles.usersadmin, roles.supervisor])
+  @Mutation(() => Boolean)
+  async saveUserSocials(@Arg('userId') userId: string, @Arg('socials') socials: string): Promise<Boolean> {
+    return this.userController.saveUserSocials(userId, socials);
+  }
 
   @Authorized([roles.superadmin, roles.usersadmin, roles.supervisor])
   @Mutation(() => Boolean)

@@ -7,7 +7,7 @@ import validator from 'validator';
 
 import { ApolloError } from 'apollo-server-errors';
 import { AccessTokenData, generateAccessToken } from '../../auth/jwToken';
-import { GraphqlContext } from '../../../sever/auth';
+import { GraphqlContext } from '../../../server/auth';
 import Roles from '../../roles/controllers/RolesClass';
 import { sendActivation, sendRecoverPassword } from './Mailer';
 import { User } from '../models/User';
@@ -272,6 +272,17 @@ export class UserController {
     return true;
   }
 
+  async saveUserPreferences(preferences: UserPreferencesInput, userId: string): Promise<boolean> {
+    const user = await User.findOne({ where: { id: userId } });
+    if (!user) {
+      //TODO internal error user not found
+      return false;
+    }
+    user.preferences = preferences;
+    user.save();
+    return true;
+  }
+
   public async nicknameExist(nickname: String, userId: string): Promise<boolean> {
     const user = await User.findOne({ where: { id: userId }, relations: ['profile'] });
     if (!user) {
@@ -323,6 +334,17 @@ export class UserController {
       return false;
     }
     const user = await User.findOne({ where: { email: ctx.user?.email } });
+    if (!user) {
+      //TODO internal error user not found
+      return false;
+    }
+    user.socials = normalizeSocials(socials);
+    user.save();
+    return true;
+  }
+
+  async saveUserSocials(userId: string, socials: string): Promise<boolean> {
+    const user = await User.findOne({ where: { id: userId } });
     if (!user) {
       //TODO internal error user not found
       return false;

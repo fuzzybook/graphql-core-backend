@@ -10,10 +10,10 @@ import { verifyAccessToken } from './core/auth/jwToken';
 import dotenv from 'dotenv';
 import uaParser from 'ua-parser-js';
 
-import { ContextUser, GraphqlContext } from './sever/auth';
-import { buildGraphQLSchema } from './sever/schema';
-import { registerGraphQL } from './sever/register';
-import { initDB } from './sever/db';
+import { ContextUser, GraphqlContext } from './server/auth';
+import { buildGraphQLSchema } from './server/schema';
+import { registerGraphQL } from './server/register';
+import { initDB } from './server/db';
 import { Session } from './core/users/models/Session';
 import Roles from './core/roles/controllers/RolesClass';
 import { getRoles } from './Scripts/getRoles';
@@ -115,7 +115,6 @@ async function main() {
           return ctx;
         }
       },
-
       plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
     });
 
