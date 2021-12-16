@@ -10,3 +10,11 @@ export class TemplatesResponse {
   @Field((type) => String)
   file: string;
 }
+
+@ObjectType()
+export class TemplatesParsingResponse {
+  @Field((type) => String)
+  text: string;
+  @Field((type) => Boolean, { nullable: true })
+  error: boolean;
+}

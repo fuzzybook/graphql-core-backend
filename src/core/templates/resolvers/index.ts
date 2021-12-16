@@ -2,7 +2,7 @@ import { Resolver, Query, Arg } from 'type-graphql';
 import dotenv from 'dotenv';
 import mjml2html from 'mjml';
 import { LocalFileSystemStorage, LocalFileSystemStorageConfig } from '../../abstractFS';
-import { TemplatesResponse } from '../Responses';
+import { TemplatesParsingResponse, TemplatesResponse } from '../Responses';
 
 dotenv.config({
   path: '.env',
@@ -57,13 +57,14 @@ export class FsTemplatesResolver {
     }
   }
 
-  @Query(() => String)
+  @Query(() => TemplatesParsingResponse)
   async previewMJML(@Arg('template') template: string) {
     try {
-      const htmlOutput = mjml2html(template, {});
-      return htmlOutput.html;
+      const htmlOutput = mjml2html(template, { validationLevel: 'strict' });
+      return { text: htmlOutput.html, error: false };
     } catch (e) {
-      return { data: (e as Error).message };
+      console.log(e);
+      return { text: e, error: true };
     }
   }
 }
