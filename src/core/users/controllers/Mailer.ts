@@ -17,7 +17,7 @@ export interface ResetPasswordData {
 export const sendMailConfig = {
   site: 'FANTASKIPPER',
   siteUrl: 'http://localhost:8080',
-  templateBase: '/home/fabio/CODE/GRAPHQL/FANTASKIPPER/graphql-fantaskipper-backend/FS_templates',
+  templateBase: '/home/fabio/CODE/GRAPHQL/FANTASKIPPER/graphql-fantaskipper-backend/FS_system',
   from: '"Fantaskipper" <noreplay@fantaskipper.com>',
   activation: {
     subject: 'Welcome to Fantaskipper comunity!',

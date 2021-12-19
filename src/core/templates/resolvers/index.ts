@@ -1,15 +1,20 @@
-import { Resolver, Query, Arg } from 'type-graphql';
+import { Resolver, Query, Arg, Authorized, Mutation } from 'type-graphql';
 import dotenv from 'dotenv';
 import mjml2html from 'mjml';
+import { MJMLParseError } from 'mjml-core';
 import { LocalFileSystemStorage, LocalFileSystemStorageConfig } from '../../abstractFS';
-import { TemplatesParsingResponse, TemplatesResponse } from '../Responses';
+import { TemplatesParsingResponse } from '../Responses';
+
+import { transactionalMail } from '../../../config/transactionalMail';
+import { roles } from '../../roles/generated';
+import { TreeRepositoryNotSupportedError } from 'typeorm';
 
 dotenv.config({
   path: '.env',
 });
 
 const fsConfig = <LocalFileSystemStorageConfig>{
-  root: process.env.FSTEMPLATES,
+  root: process.env.FSSYSTEM,
 };
 
 @Resolver()
@@ -43,28 +48,57 @@ export class FsTemplatesResolver {
     }
   }
 
-  // TODO wrong implementation do recursive types
-  @Query(() => TemplatesResponse)
-  async templatesDirectory(@Arg('path') path: string) {
+  @Query(() => String)
+  async transctionalMails() {
     try {
-      const result = this.fs.directoryList(path, /\.(mjml|js|html)$/);
-      const template = <TemplatesResponse>{};
-      const test = Object.assign(template, result);
-      console.log(test);
-      return test;
+      return JSON.stringify(transactionalMail);
+    } catch (e) {
+      return { data: (e as Error).message };
+    }
+  }
+
+  @Query(() => String)
+  async getTransctionalMail(@Arg('template') template: string) {
+    try {
+      const filename = '/transactionalMail/' + transactionalMail.templates[template].fileName;
+      if (await this.fs.exists(filename)) {
+        const result = await this.fs.get(filename);
+        return result.content;
+      }
+      const result = await this.fs.get('/transactionalMail/void.mjml');
+      return result.content;
     } catch (e) {
       return { data: (e as Error).message };
     }
   }
 
   @Query(() => TemplatesParsingResponse)
-  async previewMJML(@Arg('template') template: string) {
+  previewMJML(@Arg('template') template: string) {
     try {
-      const htmlOutput = mjml2html(template, { validationLevel: 'strict' });
-      return { text: htmlOutput.html, error: false };
+      const htmlOutput = mjml2html(template, {});
+      return { text: htmlOutput.html, errors: JSON.stringify(htmlOutput.errors) };
     } catch (e) {
-      console.log(e);
-      return { text: e, error: true };
+      const errors: MJMLParseError[] = [];
+      errors.push({
+        line: 1,
+        message: (e as Error).message,
+        tagName: 'mjml',
+        formattedMessage: '',
+      });
+      return { text: '', errors: JSON.stringify(errors) };
+    }
+  }
+
+  @Authorized([roles.superadmin, roles.usersadmin, roles.supervisor])
+  @Mutation(() => Boolean)
+  async saveTransctionalMail(@Arg('template') template: string, @Arg('name') name: string) {
+    console.log(name, template);
+    try {
+      const filename = '/transactionalMail/' + transactionalMail.templates[name].fileName;
+      const result = await this.fs.put(filename, template);
+      return true;
+    } catch (e) {
+      return { data: (e as Error).message };
     }
   }
 }

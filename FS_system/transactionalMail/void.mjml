@@ -1,0 +1,13 @@
+<mjml owa="desktop" version="4.3.0">
+  <mj-head>
+    <mj-font href="https://fonts.googleapis.com/css?family=Montserrat" name="Montserrat"></mj-font>
+    <mj-font href="https://fonts.googleapis.com/css?family=Raleway" name="Raleway"></mj-font>
+    <mj-font href="https://fonts.googleapis.com/css?family=Open Sans" name="Open Sans"></mj-font>
+
+  </mj-head>
+  <mj-body background-color="#f8f8f8">
+    <mj-section background-repeat="repeat" background-size="auto" padding-bottom="0px" padding-top="20px" padding="20px 0px 20px 0px" text-align="center">
+      void template
+    </mj-section>
+  </mj-body>
+</mjml>

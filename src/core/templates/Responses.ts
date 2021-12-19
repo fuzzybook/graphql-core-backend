@@ -1,20 +1,9 @@
-import { Field, Float, ObjectType } from 'type-graphql';
-import { FileAttributes } from '../abstractFS/directoryTree';
-
-@ObjectType()
-export class TemplatesResponse {
-  @Field((type) => String)
-  path: string;
-  @Field((type) => String)
-  parent: string;
-  @Field((type) => String)
-  file: string;
-}
+import { Field, ObjectType } from 'type-graphql';
 
 @ObjectType()
 export class TemplatesParsingResponse {
   @Field((type) => String)
   text: string;
-  @Field((type) => Boolean, { nullable: true })
-  error: boolean;
+  @Field((type) => String, { nullable: true })
+  errors: string;
 }
