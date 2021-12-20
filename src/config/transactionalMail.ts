@@ -1,5 +1,15 @@
+import dotenv from 'dotenv';
+dotenv.config({
+  path: '.env',
+});
+
+export interface TransactionalMailTemplateVars {
+  var: string;
+  description?: string;
+}
+
 export interface TransactionalMailTemplate {
-  [key: string]: { type: string; fileName: string };
+  [key: string]: { type: string; fileName: string; icon: string; vars?: TransactionalMailTemplateVars[] };
 }
 
 export interface TransactionalMailConstants {
@@ -11,19 +21,46 @@ export interface TransactionalMail {
 }
 
 export const transactionalMail: TransactionalMail = {
-  constants: {},
+  constants: {
+    siteName: process.env.SITE_NAME || '',
+    siteUrl: process.env.SITE_URL || '',
+    siteSupport: process.env.SITE_SUPPORT || '',
+    siteMail: process.env.SITE_MAIL || '',
+  },
   templates: {
+    head: {
+      type: 'part',
+      fileName: 'head.mjml',
+      icon: 'mediation',
+    },
+    footer: {
+      type: 'part',
+      fileName: 'footer.mjml',
+      icon: 'mediation',
+    },
+    banner: {
+      type: 'part',
+      fileName: 'banner.mjml',
+      icon: 'mediation',
+    },
     activation: {
       type: 'template',
       fileName: 'activation.mjml',
+      icon: 'article',
+      vars: [
+        { var: 'token', description: 'activation token' },
+        { var: 'user', description: 'user name' },
+      ],
     },
     assigned: {
       type: 'template',
       fileName: 'assigned.mjml',
+      icon: 'article',
     },
     confirmation: {
       type: 'template',
       fileName: 'confirmation.mjml',
+      icon: 'article',
     },
   },
 };

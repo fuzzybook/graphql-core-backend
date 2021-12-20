@@ -1,5 +1,6 @@
 import { Resolver, Query, Arg, Authorized, Mutation } from 'type-graphql';
 import dotenv from 'dotenv';
+import path from 'path';
 import mjml2html from 'mjml';
 import { MJMLParseError } from 'mjml-core';
 import { LocalFileSystemStorage, LocalFileSystemStorageConfig } from '../../abstractFS';
@@ -57,12 +58,30 @@ export class FsTemplatesResolver {
     }
   }
 
+  async insertHead(content: string) {
+    const filename = '/transactionalMail/testHead.mjml';
+    const chk = await this.fs.exists(filename);
+    if (chk.exists) {
+      const result = await this.fs.get(filename);
+      let pos = result.content.indexOf('<!--HEAD-->');
+      let endpos = result.content.indexOf('<!--/HEAD-->');
+      const txt = `${result.content.substring(0, pos + '<!--HEAD-->'.length)}
+      ${content}
+      ${result.content.substring(endpos)}`;
+      return txt;
+    }
+  }
+
   @Query(() => String)
   async getTransctionalMail(@Arg('template') template: string) {
     try {
       const filename = '/transactionalMail/' + transactionalMail.templates[template].fileName;
-      if (await this.fs.exists(filename)) {
+      const chk = await this.fs.exists(filename);
+      if (chk.exists) {
         const result = await this.fs.get(filename);
+        /* if (transactionalMail.templates[template].type == 'head') {
+          return await this.insertHead(result.content);
+        } */
         return result.content;
       }
       const result = await this.fs.get('/transactionalMail/void.mjml');
@@ -73,9 +92,13 @@ export class FsTemplatesResolver {
   }
 
   @Query(() => TemplatesParsingResponse)
-  previewMJML(@Arg('template') template: string) {
+  previewMJML(@Arg('template') template: string, @Arg('type') type: string) {
     try {
-      const htmlOutput = mjml2html(template, {});
+      if (type == 'part') {
+        return { text: '<b>fragments not rendered</b><br>import in template to test!', errors: JSON.stringify([]) };
+      }
+      const htmlOutput = mjml2html(template, { filePath: path.resolve(fsConfig.root, 'transactionalMail') });
+      console.log(type, htmlOutput);
       return { text: htmlOutput.html, errors: JSON.stringify(htmlOutput.errors) };
     } catch (e) {
       const errors: MJMLParseError[] = [];

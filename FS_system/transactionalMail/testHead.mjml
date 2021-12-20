@@ -1,0 +1,9 @@
+<mjml owa="desktop" version="4.3.0">
+  <!--HEAD-->
+  <!--/HEAD-->
+  <mj-body background-color="#f8f8f8">
+    <mj-section background-repeat="repeat" background-size="auto" padding-bottom="0px" padding-top="20px" padding="20px 0px 20px 0px" text-align="center">
+
+    </mj-section>
+  </mj-body>
+</mjml>
