@@ -98,7 +98,6 @@ export class FsTemplatesResolver {
         return { text: '<b>fragments not rendered</b><br>import in template to test!', errors: JSON.stringify([]) };
       }
       const htmlOutput = mjml2html(template, { filePath: path.resolve(fsConfig.root, 'transactionalMail') });
-      console.log(type, htmlOutput);
       return { text: htmlOutput.html, errors: JSON.stringify(htmlOutput.errors) };
     } catch (e) {
       const errors: MJMLParseError[] = [];

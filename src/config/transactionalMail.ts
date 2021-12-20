@@ -3,13 +3,13 @@ dotenv.config({
   path: '.env',
 });
 
-export interface TransactionalMailTemplateVars {
+export interface TransactionalMailTemplateVar {
   var: string;
   description?: string;
 }
 
 export interface TransactionalMailTemplate {
-  [key: string]: { type: string; fileName: string; icon: string; vars?: TransactionalMailTemplateVars[] };
+  [key: string]: { type: string; fileName: string; icon: string; vars?: TransactionalMailTemplateVar[] };
 }
 
 export interface TransactionalMailConstants {
