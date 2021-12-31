@@ -12,7 +12,7 @@ export class SetRolesInput {
 
 @InputType()
 export class UserProfileInput {
-  @Field(() => String, { nullable: true })
+  @Field(() => String, { nullable: true, description: 'prova con erdo' })
   nickname?: string;
   @Field(() => String, { nullable: true })
   title?: string;

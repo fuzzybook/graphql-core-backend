@@ -8,7 +8,9 @@ import { TemplatesParsingResponse } from '../Responses';
 
 import { transactionalMail } from '../../../config/transactionalMail';
 import { roles } from '../../roles/generated';
-import { TreeRepositoryNotSupportedError } from 'typeorm';
+import { v4 as uuidv4 } from 'uuid';
+import gm from 'gm';
+import fs from 'fs';
 
 dotenv.config({
   path: '.env',
@@ -91,6 +93,33 @@ export class FsTemplatesResolver {
     }
   }
 
+  async getTransctionalThumbs() {
+    if (!process.env.TRANSACTIONAL_IMAGES_PATH) return [];
+    if (!process.env.SERVER_URL) return [];
+    const serverUrl = process.env.SERVER_URL + process.env.TRANSACTIONAL_IMAGES_ENDPOINT;
+    const files = await fs.promises.readdir(process.env.TRANSACTIONAL_IMAGES_PATH);
+    return files
+      .map((fileName) => ({
+        name: fileName,
+        time: fs.statSync(`${process.env.TRANSACTIONAL_IMAGES_PATH}/${fileName}`).mtime.getTime(),
+      }))
+      .sort((a, b) => a.time - b.time)
+      .filter((file) => file.name.indexOf('.thumb.png') != -1)
+      .map((file) => {
+        return serverUrl + file.name;
+      });
+  }
+
+  @Query(() => [String])
+  async getTransctionalImages() {
+    try {
+      const files = await this.getTransctionalThumbs();
+      return files;
+    } catch (e) {
+      return { data: (e as Error).message };
+    }
+  }
+
   @Query(() => TemplatesParsingResponse)
   previewMJML(@Arg('template') template: string, @Arg('type') type: string) {
     try {
@@ -108,6 +137,55 @@ export class FsTemplatesResolver {
         formattedMessage: '',
       });
       return { text: '', errors: JSON.stringify(errors) };
+    }
+  }
+
+  processImage(filename: string, image: string): Promise<string> {
+    return new Promise((resolve, reject) => {
+      let imgData: Buffer;
+      if (image.indexOf('data:image/png;base64,') !== -1) {
+        imgData = Buffer.from(image.replace('data:image/png;base64,', ''), 'base64');
+      } else {
+        imgData = Buffer.from(image.replace('data:image/jpeg;base64,', ''), 'base64');
+      }
+      let g = gm(imgData);
+      g.write(filename + '.png', function (err) {
+        if (err) {
+          reject(err.message);
+        } else {
+          g.size(function (err, size) {
+            if (err) reject(err);
+            if (size.height >= size.width) {
+              g.resize(null, 100).write(filename + '.thumb.png', function (err) {
+                if (err) reject(err.message);
+                resolve('ok');
+              });
+            } else {
+              g.resize(100).write(filename + '.thumb.png', function (err) {
+                if (err) reject(err.message);
+                resolve('ok');
+              });
+            }
+          });
+        }
+      });
+    });
+  }
+
+  @Authorized([roles.superadmin, roles.usersadmin, roles.supervisor])
+  @Mutation(() => Boolean)
+  async saveTransctionalMailImage(@Arg('image') image: string, @Arg('id') id: string) {
+    try {
+      if (!id) {
+        id = uuidv4();
+      }
+      const filename = process.env.TRANSACTIONAL_IMAGES_PATH + id;
+      const result = await this.processImage(filename, image);
+      if (result == 'ok') return true;
+
+      return false;
+    } catch (e) {
+      return { data: (e as Error).message };
     }
   }
 

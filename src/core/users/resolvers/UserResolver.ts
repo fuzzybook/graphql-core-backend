@@ -1,6 +1,7 @@
 import { Resolver, Query, Mutation, Arg, Authorized, Ctx } from 'type-graphql';
 
 import uuidValidate from 'uuid-validate';
+
 import { LoginResponse, UserResponse } from '../Responses';
 import { UserProfileInput, SetRolesInput, UpdateUserInput, UpdateUserStatusInput, UserInput, UserPreferencesInput, UpdateUserPasswordInput } from '../Inputs';
 import dotenv from 'dotenv';

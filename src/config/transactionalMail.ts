@@ -9,7 +9,7 @@ export interface TransactionalMailTemplateVar {
 }
 
 export interface TransactionalMailTemplate {
-  [key: string]: { type: string; fileName: string; icon: string; vars?: TransactionalMailTemplateVar[] };
+  [key: string]: { type: string; fileName: string; icon: string; vars?: TransactionalMailTemplateVar[]; subject?: string };
 }
 
 export interface TransactionalMailConstants {
@@ -26,6 +26,7 @@ export const transactionalMail: TransactionalMail = {
     siteUrl: process.env.SITE_URL || '',
     siteSupport: process.env.SITE_SUPPORT || '',
     siteMail: process.env.SITE_MAIL || '',
+    siteMailfrom: process.env.SITE_MAIL_FROM || '',
   },
   templates: {
     head: {
@@ -51,6 +52,7 @@ export const transactionalMail: TransactionalMail = {
         { var: 'token', description: 'activation token' },
         { var: 'user', description: 'user name' },
       ],
+      subject: 'Welcome to Fantaskipper comunity!',
     },
     assigned: {
       type: 'template',

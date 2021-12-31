@@ -9,30 +9,15 @@
                 font-size="13px" icon-size="30px" line-height="22px" mode="horizontal" padding-bottom="0px"
                 padding="10px 25px">
                 <mj-social-element background-color="#DEDEDE" name="facebook-noshare"
-                    src="http://www.mailjet.com/saas-templates-creator/static/img/facebook_black.png">
+                    src="http://localhost:4000/tmimages/0b4a20f5-9be4-4a7e-8d36-583e5e8f00cf.png">
                 </mj-social-element>
                 <mj-social-element background-color="#DEDEDE" name="twitter-noshare"
-                    src="http://www.mailjet.com/saas-templates-creator/static/img/twitter_black.png">
+                    src="http://localhost:4000/tmimages/467999c9-3186-41fa-87c9-719ab6193464.png">
                 </mj-social-element>
                 <mj-social-element background-color="#DEDEDE" name="linkedin-noshare"
-                    src="http://www.mailjet.com/saas-templates-creator/static/img/linkedin_black.png">
+                    src="http://localhost:4000/tmimages/221a64ac-b3d9-40d7-8d43-1cf7988a196c.png">
                 </mj-social-element>
+               
             </mj-social>
-            <mj-text align="center" color="#797e82" font-family="Open Sans, Helvetica, Arial, sans-serif"
-                font-size="11px" line-height="22px" padding-bottom="0px" padding-top="0px" padding="0px 20px 0px 20px">
-                <p style="margin: 10px 0;"><a target="_blank" rel="noopener noreferrer" style="color:#DEDEDE"
-                        href="#"><span style="color:#DEDEDE">Page 1</span></a><span style="color:#797e82">&nbsp; &nbsp;|&nbsp; &nbsp;</span><a
-                        target="_blank" rel="noopener noreferrer" style="color:#DEDEDE"
-                        href="#"><span style="color:#DEDEDE">Page 2</span></a><span style="color:#797e82">&nbsp; &nbsp;|&nbsp; &nbsp;</span><a
-                        target="_blank" rel="noopener noreferrer" style="color:#DEDEDE"
-                        href="#"><span style="color:#DEDEDE">Page 3</span></a></p>
-                <p style="margin: 10px 0;">C<a target="_blank" rel="noopener noreferrer"
-                        style="color:inherit; text-decoration:none" href="[[UNSUB_LINK_EN]]">lick
-                        <span style="color:#DEDEDE"><u>here</u></span> to
-                        unsubscribe</a>.<br /><span style="font-size:10px">Created by&nbsp;</span><a target="_blank"
-                        rel="noopener noreferrer" style="font-size:10px; color:inherit; text-decoration: none"
-                        href="https://www.mailjet.com/?utm_source=saas_email_templates&amp;utm_medium=logo_footer_email&amp;utm_campaign=task_assigned"><span style="color:#DEDEDE"><u>Mailjet</u></span></a>
-                </p>
-            </mj-text>
         </mj-column>
 </mj-section>

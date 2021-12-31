@@ -3,6 +3,11 @@ import fs from 'fs';
 import mjml2html from 'mjml';
 import ejs from 'ejs';
 import { MailerResults } from '../models/Mailer';
+import dotenv from 'dotenv';
+dotenv.config({
+  path: '.env',
+});
+import { transactionalMail } from '../../../config/transactionalMail';
 
 export interface ActivationData {
   name: string;
@@ -19,6 +24,7 @@ export const sendMailConfig = {
   siteUrl: 'http://localhost:8080',
   templateBase: '/home/fabio/CODE/GRAPHQL/FANTASKIPPER/graphql-fantaskipper-backend/FS_system',
   from: '"Fantaskipper" <noreplay@fantaskipper.com>',
+
   activation: {
     subject: 'Welcome to Fantaskipper comunity!',
     file: 'activation.mjml',
@@ -27,6 +33,7 @@ export const sendMailConfig = {
       token: '',
     },
   },
+
   reset: {
     subject: 'Fantaskipper comunity - recover password',
     file: 'reset.mjml',
@@ -37,7 +44,10 @@ export const sendMailConfig = {
 };
 
 export const sendActivation = async (email: string, data: ActivationData) => {
-  const file = `${sendMailConfig.templateBase}/${sendMailConfig.activation.file}`;
+  const mailTemplatesPath = process.env.TRANSACTIONAL_PATH;
+  const template = transactionalMail.templates.activation;
+
+  const file = `${mailTemplatesPath}${template.fileName}`;
   //TODO verify parameters
   const params = {
     name: data.name,

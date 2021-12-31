@@ -13,12 +13,17 @@
                     padding-bottom="0px" padding-top="0px" padding="0px 0px 0px 25px">
                     <p style="margin: 10px 0; text-align: center;"><a class="link-nostyle" target="_blank"
                             rel="noopener noreferrer" text-decoration="none"
-                            href="<%= siteUrl %>"><b><%= site %></b></a></p>
+                            href="<%= constant:siteUrl %>"><b><%= constant:siteName %></b></a></p>
                     <p style="margin: 10px 0; text-align: center;">
-                        <i  style="font-style:normal"><b style="font-weight:700">Welcome!</b></i></p>
+                        <i  style="font-style:normal"><b style="font-weight:700">Welcome!</b></i>
+                    </p>
                 </mj-text>
             </mj-column>
         </mj-section>
+
+        <!-- test -->
+        <!-- test -->
+        <!-- test -->
 
         </mj-column>
         </mj-section>
@@ -27,7 +32,8 @@
             <mj-column>
                 <mj-image align="center" alt="" border="none" href="" padding-bottom="0px" padding-left="50px"
                     padding-right="50px" padding-top="40px" padding="10px 25px"
-                    src="http://9pl9.mjt.lu/tplimg/9pl9/b/ygjj/t65lu.png" target="_blank" title="" width="300px">
+                    src="http://localhost:4000/tmimages/f24c7a48-2f10-479b-823e-d513a23b90a6.png" target="_blank"
+                    title="" width="300px">
                 </mj-image>
             </mj-column>
         </mj-section>
@@ -42,23 +48,26 @@
                 <mj-text align="left" color="#797e82" font-family="Open Sans, Helvetica, Arial, sans-serif"
                     font-size="13px" line-height="22px" padding-bottom="0px" padding-left="50px" padding-right="50px"
                     padding-top="0px" padding="0px 25px 0px 25px">
-                    <p style="margin: 10px 0; text-align: center;">Hi <%= name %> , Thank you for signing up to .&nbsp;
+                    <p style="margin: 10px 0; text-align: center;">Hi <%= var:user %> , Thank you for signing up to
+                            .&nbsp;
                     </p>
                     <p style="margin: 10px 0; text-align: center;">To confirm your account, simply click on the button
                         below:</p>
                 </mj-text>
                 <mj-button align="center" background-color="#DEDEDE" border-radius="100px" border="none" color="#222"
                     font-family="Open Sans, Helvetica, Arial, sans-serif" font-size="13px" font-weight="normal"
-                    href="<%= url %>" inner-padding="15px 25px 15px 25px" padding-bottom="20px" padding-top="20px"
-                    padding="10px 25px" text-decoration="none" text-transform="none" vertical-align="middle">
-                    <b style="font-weight:700"><b style="font-weight:700">Activate My Account</b></b></mj-button>
+                    href="<%= constant:token %>" inner-padding="15px 25px 15px 25px" padding-bottom="20px"
+                    padding-top="20px" padding="10px 25px" text-decoration="none" text-transform="none"
+                    vertical-align="middle">
+                    <b style="font-weight:700"><b style="font-weight:700">Activate My Account</b></b>
+                </mj-button>
                 <mj-text align="left" color="#797e82" font-family="Open Sans, Helvetica, Arial, sans-serif"
                     font-size="13px" line-height="22px" padding-bottom="0px" padding-left="50px" padding-right="50px"
                     padding-top="0px" padding="0px 25px 0px 25px">
                     <p style="margin: 10px 0; text-align: center;">If the link doesn&rsquo;t work, copy this URL into
-                        your browser<br> <a target="_blank" rel="noopener noreferrer" href="<%= url %>"
+                        your browser<br> <a target="_blank" rel="noopener noreferrer" href="<%= var:token %>"
                             style="color:#000000">
-                            <%= url %>
+                            <%= var:token %>
                         </a></p>
                 </mj-text>
             </mj-column>

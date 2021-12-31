@@ -17,6 +17,7 @@ import { initDB } from './server/db';
 import { Session } from './core/users/models/Session';
 import Roles from './core/roles/controllers/RolesClass';
 import { getRoles } from './Scripts/getRoles';
+import path from 'path';
 
 // carica le variabili d'ambiente dal file .env ddd
 dotenv.config({
@@ -85,7 +86,10 @@ async function main() {
 
   async function startApolloServer() {
     const app = express();
+    const tmimages = process.env.TRANSACTIONAL_IMAGES_PATH || '';
+    app.use('/tmimages', express.static(tmimages));
     app.use('/icons', express.static(process.env.ICONS_PATH || ''));
+
     const httpServer = http.createServer(app);
     server = new ApolloServer({
       schema,
@@ -119,10 +123,15 @@ async function main() {
     });
 
     await server.start();
-    server.applyMiddleware({ app });
+    server.applyMiddleware({
+      app,
+      bodyParserConfig: {
+        limit: '10mb',
+      },
+    });
     try {
       await new Promise((resolve) => {
-        httpServer.listen({ port: 4000 }, () => {
+        httpServer.listen({ port: 4000, bodyParserOptions: { limit: '20mb', type: 'application/json' } }, () => {
           console.log(`\x1b[32m\x1b[7m\nHTTP SERVER READY AT http://localhost:4000${server.graphqlPath}\n\x1b[0m`);
         });
         resolve('ok');
