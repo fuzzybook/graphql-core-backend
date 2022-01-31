@@ -1,9 +1,4 @@
-/**
- * @slynova/flydrive
- *
- * @license MIT
- * @copyright Slynova - Romain Lanz <romain.lanz@slynova.ch>
- */
+// TODO unit test
 import FS from 'fs';
 import * as fse from 'fs-extra';
 import { promises as fs } from 'fs';

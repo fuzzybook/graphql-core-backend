@@ -1,9 +1,4 @@
-/**
- * @slynova/flydrive
- *
- * @license MIT
- * @copyright Slynova - Romain Lanz <romain.lanz@slynova.ch>
- */
+// TODO unit test
 
 export * from './AuthorizationRequired';
 export * from './DriverNotSupported';

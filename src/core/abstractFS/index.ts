@@ -1,9 +1,4 @@
-/**
- * @slynova/flydrive
- *
- * @license MIT
- * @copyright Slynova - Romain Lanz <romain.lanz@slynova.ch>
- */
+// TODO unit test
 
 export { default as Storage } from './Storage';
 export { default as StorageManager } from './StorageManager';
