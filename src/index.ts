@@ -18,6 +18,7 @@ import { Session } from './core/users/models/Session';
 import Roles from './core/roles/controllers/RolesClass';
 import { getRoles } from './Scripts/getRoles';
 import path from 'path';
+import { generateUsers } from './faker/getUsers';
 
 // carica le variabili d'ambiente dal file .env ddd
 dotenv.config({
@@ -81,6 +82,8 @@ async function main() {
   registerGraphQL();
 
   await initDB();
+
+  generateUsers();
 
   const schema = await buildGraphQLSchema();
 
