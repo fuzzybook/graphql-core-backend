@@ -9,5 +9,6 @@
     "strictPropertyInitialization": false,
     "outDir": "build/",
     "incremental": true,
-  }
+  },
+  "exclude": ["./__SPECS__"]
 }

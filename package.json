@@ -13,10 +13,26 @@
   },
   "scripts": {
     "dev": "nodemon src/index.ts",
-    "kill process": "(! lsof -t -i:4000) || kill -9 $(lsof -t -i:4000)"
+    "kill process": "(! lsof -t -i:4000) || kill -9 $(lsof -t -i:4000)",
+    "test": "jest --no-cache --runInBand --bail --detectOpenHandles --forceExit",
+    "test coverage": "jest --coverage",
+    "clear_jest": "jest --clearCache"
   },
   "author": "Fabio Prada <prada.fabio@gmail.com>",
   "license": "MIT",
+  "jest": {
+    "preset": "ts-jest",
+    "testEnvironment": "node",
+    "testMatch": [
+      "**/*test.ts"
+    ],
+    "coveragePathIgnorePatterns": [
+      "/node_modules/"
+    ],
+    "setupFiles": [
+      "./jest-setup-file.ts"
+    ]
+  },
   "dependencies": {
     "@types/glob": "^7.2.0",
     "apollo-server": "^3.5.0",
@@ -56,6 +72,7 @@
     "@types/fs-extra": "^9.0.10",
     "@types/gm": "^1.18.10",
     "@types/ioredis": "^4.28.1",
+    "@types/jest": "^27.4.1",
     "@types/jsonwebtoken": "^8.5.0",
     "@types/mjml": "^4.7.0",
     "@types/node-fetch": "^3.0.3",
@@ -63,7 +80,10 @@
     "@types/ua-parser-js": "^0.7.36",
     "@types/uuid": "^8.3.3",
     "@types/uuid-validate": "0.0.1",
+    "glob-promise": "^4.2.2",
+    "jest": "^27.5.1",
     "nodemon": "^2.0.15",
+    "ts-jest": "^27.1.4",
     "ts-node": "^8.6.0",
     "typescript": "^3.7.4"
   }
