@@ -11,5 +11,7 @@ yarn.lock
 .DS_Store
 package-lock.json
 
+coverage
+
 FS_userData
 FS_system
