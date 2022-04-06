@@ -15,7 +15,6 @@ export const registerGraphQL = () => {
   registerEnumType(UserStatus, {
     name: 'UserStatus',
   });
-
   registerEnumType(EnumRoles, {
     name: 'Roles',
   });

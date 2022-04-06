@@ -15,7 +15,6 @@ import { Profile } from '../models/Profile';
 import { ValidationToken, ValidationTokenType } from '../models/ValidationToken';
 import { Session } from '../models/Session';
 import { roles } from '../../roles/generated';
-import { socialsDefinitions } from '../../system/socials';
 import { normalizeSocials } from '../Scalars';
 
 export class UserController {

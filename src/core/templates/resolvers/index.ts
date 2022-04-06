@@ -156,6 +156,7 @@ export class FsTemplatesResolver {
           g.size(function (err, size) {
             if (err) reject(err);
             if (size.height >= size.width) {
+              // @ts-ignore
               g.resize(null, 100).write(filename + '.thumb.png', function (err) {
                 if (err) reject(err.message);
                 resolve('ok');

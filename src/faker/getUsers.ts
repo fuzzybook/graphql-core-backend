@@ -5,10 +5,7 @@ import { roles } from '../core/roles/generated';
 
 var faker = require('faker');
 
-export const generateUsers = async () => {
-  faker.locale = 'de_CH';
-  var emails: { [key: string]: string } = {};
-
+export const generateAdmin = async () => {
   var superadmin_profile = new Profile();
 
   superadmin_profile.title = faker.name.prefix();
@@ -28,6 +25,13 @@ export const generateUsers = async () => {
 
   superadmin.profile = superadmin_profile;
   await superadmin.save();
+};
+
+export const generateUsers = async () => {
+  faker.locale = 'de_CH';
+  var emails: { [key: string]: string } = {};
+
+  await generateAdmin();
 
   for (var i = 0; i < 100; i++) {
     // call function with no arguments

@@ -20,6 +20,8 @@ const fsConfig = <LocalFileSystemStorageConfig>{
   root: process.env.FSUSERDATA,
 };
 
+const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));
+
 @Resolver()
 export class UserResolver {
   private userController: UserController;
@@ -124,6 +126,8 @@ export class UserResolver {
 
   @Mutation(() => LoginResponse)
   async login(@Arg('email') email: string, @Arg('password') password: string, @Ctx() ctx: GraphqlContext) {
+    // TODO remove delay...
+    await delay(2000);
     return this.userController.login(email, password, ctx);
   }
 
